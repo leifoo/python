@@ -6,7 +6,11 @@ now = datetime.now()
 date = now.strftime("%Y-%b-%d")
 print(date)
 
-url = "https://www.nasdaq.com/dividend-stocks/dividend-calendar.aspx?date=2019-Sep-16"
+url = "https://www.nasdaq.com/market-activity/dividends"
+stockurl = "https://www.nasdaq.com/market-activity/stocks/"
+tablename = "market-calendar-table__table"
+numberofcolumn = 8
+dividendname = 'DIVIDEND'
 
 class dividend:
     def __init__(self, exDivDate, company, div, annualDiv, recordDate, announceDate, payDate):
@@ -19,25 +23,23 @@ class dividend:
         self.payDate = payDate
 
 driver = webdriver.Chrome()
-#driver.get("https://www.nasdaq.com/dividend-stocks/dividend-calendar.aspx?date=2019-Sep-16")
-driver.get('file://' + "/Users/chen/Downloads/Dividend_Calendar.htm")
-#table = driver.find_elements_by_class_name("DividendCalendar")
-table = driver.find_element_by_class_name("DividendCalendar")
+driver.get(url)
+#driver.get('file://' + "/Users/chen/Downloads/Dividend_Calendar.htm")
+
+table = driver.find_element_by_class_name(tablename)
 
 tablehead = table.find_element_by_tag_name('thead')
 tablebody = table.find_element_by_tag_name('tbody')
 
 tablecolomnname  = tablehead.find_elements_by_tag_name('th')
 
-#print(tableheading.text.strip())
-
-if len(tablecolomnname) != 7:
+if len(tablecolomnname) != numberofcolumn:
     sys.exit('Table column changed!!!')
 
 dividendIndex = -sys.maxsize
 
 for i,column in enumerate(tablecolomnname):
-    if column.text.strip() == 'Dividend':
+    if column.text.strip() == dividendname:
         dividendIndex = i
         print(i, column.text.strip())
         break
@@ -47,9 +49,15 @@ if dividendIndex == -sys.maxsize:
 
 tablerow = tablebody.find_elements_by_tag_name('tr')
 
-for row in tablerow:
+for i,row in enumerate(tablerow):
     dataset = row.find_elements_by_tag_name('td')
 
-    print(dataset[dividendIndex].text.strip())
+    print(dataset[0].text.strip(), dataset[dividendIndex-1].text.strip())
+
+    if i == len(tablerow)-1:
+        driver.get(stockurl+dataset[0].text.strip())
+
+#if driver.find_element_by_class_name("pagination__next"):
+#    driver.find_element_by_class_name("pagination__next").click()
 
 driver.close()
