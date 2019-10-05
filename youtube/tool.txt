@@ -1,0 +1,6 @@
+https://pypi.org/project/youtube-transcript-api/
+
+https://www.dvdvideosoft.com/free-youtube-subtitles-download
+
+1. get urls automatically
+2. need a tool to add punctuations automatically
