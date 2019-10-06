@@ -1,6 +1,7 @@
 import sys
 from youtube_transcript_api import YouTubeTranscriptApi
-from googletrans import Translator
+# from googletrans import Translator
+from translate import Translator
 
 # video_id = 'md6E-wgq4Js&t=180s'
 transcript = ''
@@ -37,10 +38,12 @@ print(transcript2)
 #       'translate.google.cn'
 #     ])
 
-translator = Translator()
+# translator = Translator()
+to_lang = 'zh'
+secret = '<your secret from Microsoft>'
+translator = Translator(to_lang=to_lang)
 
 print(translator.translate('test now'))
-print(translator.detect('我是你爹'))
 print(transcript2[:4])
-translations = translator.translate(transcript, dest='zh-CN')
-print(translations.text)
+translations = translator.translate(transcript[:500])
+print(translations)
