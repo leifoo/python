@@ -1,6 +1,8 @@
 import sys
+import os
 from datetime import datetime
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 now = datetime.now()
 date = now.strftime("%Y-%b-%d")
@@ -22,7 +24,16 @@ class dividend:
         self.announceDate = announceDate
         self.payDate = payDate
 
-driver = webdriver.Chrome()
+# Headless version
+chrome_options = Options()  
+chrome_options.add_argument("--headless")
+chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+#chrome_options.binary_location = '/Applications/Google Chrome   Canary.app/Contents/MacOS/Google Chrome Canary'
+driver = webdriver.Chrome(chrome_options=chrome_options)
+
+# Virtually open a browser
+# driver = webdriver.Chrome()
+
 driver.get(url)
 #driver.get('file://' + "/Users/chen/Downloads/Dividend_Calendar.htm")
 
