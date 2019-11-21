@@ -7,10 +7,14 @@ except:
     print('Correct usage: python extractinput.py file.txt')
     sys.exit(1)
 
+if sys.argv[2]:
+    outputname = sys.argv[2]
+else:
+    outputname = filename[:-4]+'_output.txt'
+
 count = 0
 
 file = open(filename, "r")
-outputname = filename[:-4]+'_input.txt'
 output = open(outputname, 'w')
         
 for i,row in enumerate(file):
