@@ -1,0 +1,15 @@
+https://pypi.org/project/youtube-transcript-api/
+
+https://www.dvdvideosoft.com/free-youtube-subtitles-download
+
+1. get urls automatically
+2. need a tool to add punctuations automatically
+
+https://github.com/episodeyang/deep-auto-punctuation
+https://medium.com/@praneethbedapudi/deepcorrection2-automatic-punctuation-restoration-ac4a837d92d9
+https://pdfs.semanticscholar.org/cac6/6a9a4756cc65bd1ec23278048174ef1ea7cb.pdf
+
+
+Google Translator
+https://pypi.org/project/googletrans/
+pip install googletrans
