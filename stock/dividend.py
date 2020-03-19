@@ -8,6 +8,7 @@ now = datetime.now()
 date = now.strftime("%Y-%b-%d")
 print(date)
 
+headless = False
 url = "https://www.nasdaq.com/market-activity/dividends"
 stockurl = "https://www.nasdaq.com/market-activity/stocks/"
 tablename = "market-calendar-table__table"
@@ -24,15 +25,18 @@ class dividend:
         self.announceDate = announceDate
         self.payDate = payDate
 
-# Headless version
-chrome_options = Options()  
-chrome_options.add_argument("--headless")
-chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-#chrome_options.binary_location = '/Applications/Google Chrome   Canary.app/Contents/MacOS/Google Chrome Canary'
-driver = webdriver.Chrome(chrome_options=chrome_options)
+chrome_options = Options()
+if headless: 
+    # Headless version  
+    chrome_options.add_argument("--headless")
 
-# Virtually open a browser
-# driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=chrome_options)
+
+# driver = webdriver.Chrome('./chromedriver')
+# chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+# chrome_options.binary_location = '/Applications/Google Chrome   Canary.app/Contents/MacOS/Google Chrome Canary'
+
+
 
 driver.get(url)
 #driver.get('file://' + "/Users/chen/Downloads/Dividend_Calendar.htm")
@@ -59,6 +63,7 @@ if dividendIndex == -sys.maxsize:
     sys.exit('Table without Dividened column???')
 
 tablerow = tablebody.find_elements_by_tag_name('tr')
+print( 'Number of rows = ', len(tablerow) )
 
 for i,row in enumerate(tablerow):
     dataset = row.find_elements_by_tag_name('td')
@@ -71,4 +76,4 @@ for i,row in enumerate(tablerow):
 #if driver.find_element_by_class_name("pagination__next"):
 #    driver.find_element_by_class_name("pagination__next").click()
 
-driver.close()
+# driver.close()
