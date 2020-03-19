@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import yfinance as yf
 
 now = datetime.now()
 date = now.strftime("%Y-%b-%d")
@@ -68,10 +69,17 @@ print( 'Number of rows = ', len(tablerow) )
 for i,row in enumerate(tablerow):
     dataset = row.find_elements_by_tag_name('td')
 
-    print(dataset[0].text.strip(), dataset[dividendIndex-1].text.strip())
+    stock_symbol = dataset[0].text.strip()
+    ticker = yf.Ticker(stock_symbol)
+    today_price = ticker.history().tail(1)
+    dividend_amount = float(dataset[dividendIndex-1].text.strip())
+    print(stock_symbol, today_price.columns[0], today_price['Close'], dividend_amount) # dividend_amount / today_price['Close'] * 100, '%')
+
 
     if i == len(tablerow)-1:
         driver.get(stockurl+dataset[0].text.strip())
+        # today_price = driver.find_element_by_class_name('symbol-page-header__pricing-price')
+        # print( 'Today price', today_price.text.strip())
 
 #if driver.find_element_by_class_name("pagination__next"):
 #    driver.find_element_by_class_name("pagination__next").click()
