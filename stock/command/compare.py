@@ -14,15 +14,17 @@ from tqdm import tqdm # progress
 
 style.use('ggplot')
 mpl.rcParams['figure.figsize'] = (16.0, 9.0)
-mpl.rcParams['font.size'] = 12
+# mpl.rcParams['font.size'] = 12
 # mpl.rcParams['legend.fontsize'] = 'large'
-mpl.rcParams['figure.titlesize'] = 'medium'
+# mpl.rcParams['figure.titlesize'] = 'medium'
+
+default_start_year = 2010
 
 parser = argparse.ArgumentParser(description='Compare stocks')
 parser.add_argument('symbol', nargs='+', type=str,
                    help='Stock symbols')
 parser.add_argument('-d', '--date', nargs='+', type=str,
-                   help='Start date and end date (optional)')
+                   help='Start date and end date (default: '+str(default_start_year)+'0101 to today)')
 
 args = parser.parse_args()
 # print(args.date, args.symbol)
@@ -30,18 +32,31 @@ args = parser.parse_args()
 # print(parser.parse_args('--symbol XOM AAPL --date 20200518 20200519'.split()))
 
 # Load data
-start = dt.datetime(int(args.date[0][:4]), int(args.date[0][4:6]), int(args.date[0][6:8]))
+start = dt.datetime(default_start_year, 1, 1)
+if args.date:
+    month, day = 1, 1
+    if (len(args.date[0])) > 4:
+        month = int(args.date[0][4:6])
+    if (len(args.date[0])) > 6:
+        day = int(args.date[0][6:8])
+    start = dt.datetime(int(args.date[0][:4]), month, day)
+
 end = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-if len(args.date) == 2:
-    end = dt.datetime(int(args.date[1][:4]), int(args.date[1][4:6]), int(args.date[1][6:8]))
+if args.date and len(args.date) == 2:
+    month, day = 1, 1
+    if (len(args.date[1])) > 4:
+        month = int(args.date[1][4:6])
+    if (len(args.date[1])) > 6:
+        day = int(args.date[1][6:8])
+    end = dt.datetime(int(args.date[1][:4]), month, day)
 print('Start date:', start)
 print('  End date:', end)
 
 tickers = args.symbol
 main_df = pd.DataFrame()
 
-ax1 = plt.subplot2grid((6,1), (0,0), rowspan=4, colspan=1)
-ax2 = plt.subplot2grid((6,1), (4,0), rowspan=2, colspan=1,sharex=ax1)
+ax1 = plt.subplot2grid((6,1), (0,0), rowspan=5, colspan=1)
+ax2 = plt.subplot2grid((6,1), (5,0), rowspan=1, colspan=1,sharex=ax1)
 
 for count, ticker in enumerate(tqdm(tickers)):
     df = web.DataReader(ticker, 'yahoo', start, end)
