@@ -30,7 +30,6 @@ if os.path.exists(ifile):
     print(df['API'].tail())
 
     df['API'].to_csv(ifile[:-4]+'_uwi2api.txt', header=None, index=None, sep=' ', mode='w')
-    # df['API'].to_csv(ifile[:-4]+'_uwi2api.csv')
     # print([x for x in df['API']])
 
 else:
