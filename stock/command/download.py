@@ -1,24 +1,12 @@
 import argparse
-import bs4 as bs
 import datetime as dt
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from matplotlib import style
 import os
 import pandas as pd
 import pandas_datareader.data as web
-import pickle
-import requests
 import time
 from tqdm import tqdm # progress
 import sys
 from get_all_tickers import get_tickers as gt
-
-style.use('ggplot')
-mpl.rcParams['figure.figsize'] = (16.0, 9.0)
-# mpl.rcParams['font.size'] = 12
-# mpl.rcParams['legend.fontsize'] = 'large'
-# mpl.rcParams['figure.titlesize'] = 'medium'
 
 default_start_year = 2000
 data_path = '../data/all_stock'
