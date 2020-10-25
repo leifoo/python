@@ -10,7 +10,7 @@ class Solution:
         def helper(j, temp):
             # print(j, type(temp), type(temp[:]), temp, temp[:], len(temp), k)
             if len(temp) == k:
-                result.append(temp[:])
+                result.append(temp[:]) # deep copy
 
             for i in range(j, n):
                 temp.append(nums[i])
