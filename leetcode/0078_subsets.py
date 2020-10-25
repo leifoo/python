@@ -8,7 +8,7 @@ class Solution:
         result = []
 
         def helper(j, temp):
-            print(j, type(temp), type(temp[:]), temp, temp[:], len(temp), k)
+            # print(j, type(temp), type(temp[:]), temp, temp[:], len(temp), k)
             if len(temp) == k:
                 result.append(temp[:])
 

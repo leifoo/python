@@ -1,9 +1,9 @@
 class solution:
-    def spiralOrder(self, matrix: [List[int]]) -> List[int]:
-        
+    def spiralOrder(self, matrix):
+    # def spiralOrder(self, matrix: [List[int]]) -> List[int]:
         result = []
 
-        if not List:
+        if not matrix:
             return result
 
         direction = [[0, 1], [1, 0], [0, -1], [-1, 0]]
@@ -33,5 +33,5 @@ class solution:
 if __name__ == "__main__":
     y = solution()
     x = [[1,2,3], [4,5,6], [7,8,9]]
-    print("x = ", x, ", y = ", y(x))
+    print("x = ", x, ", y = ", y.spiralOrder(x))
 
