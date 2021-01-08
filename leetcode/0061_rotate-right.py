@@ -20,10 +20,10 @@ class Solution:
 
         # important
         if k == 0:
-        return head
+            return head
 
         left = head
-        for i in range(size - k - 1):
+        for _ in range(size - k - 1):
             left = left.next
 
         cur.next = head
