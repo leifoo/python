@@ -38,6 +38,7 @@ class Solution:
 if __name__ == "__main__":
     x = [2, 5, 1, 3, 4]
     print("Input:  {}".format(x))
+    
     y = Solution()
     y.sortIntegers2(x)
     print('Output: {}'.format(x))
