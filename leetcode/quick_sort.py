@@ -15,7 +15,7 @@ class Solution:
         
         left, right = start, end
         # key point 1: pivot is the value, not the index
-        pivot = A[(start + end) // 2];
+        pivot = A[(start + end) // 2]
 
         # key point 2: every time you compare left & right, it should be 
         # left <= right not left < right
@@ -36,9 +36,9 @@ class Solution:
         self.quickSort(A, left, end)
 
 if __name__ == "__main__":
-    x = [2, 5, 1, 3, 4]
+    x = [2, 5, 2, 3, 4, 1]
     print("Input:  {}".format(x))
-    
+
     y = Solution()
     y.sortIntegers2(x)
     print('Output: {}'.format(x))
