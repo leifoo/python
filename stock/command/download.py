@@ -1,3 +1,9 @@
+# +
+# conda install -c anaconda pandas-datareader
+# conda install -c conda-forge tqdm
+# sudo pip install get-all-tickers
+# -
+
 import argparse
 import datetime as dt
 import os
@@ -7,6 +13,8 @@ import time
 from tqdm import tqdm # progress
 import sys
 from get_all_tickers import get_tickers as gt
+import requests
+import bs4 as bs
 
 default_start_year = 2000
 data_path = '../data/all_stock'
@@ -55,10 +63,31 @@ if args.date and len(args.date) == 2:
 print('Start date:', start)
 print('  End date:', end)
 
+
+# +
+def save_sp500_tickers():
+    resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
+    soup = bs.BeautifulSoup(resp.text, 'lxml')
+    table = soup.find('table', {'class': 'wikitable sortable'})
+    tickers = []
+    for row in table.findAll('tr')[1:]:
+        ticker = row.findAll('td')[0].text
+        tickers.append(ticker.rstrip().replace('.', '-'))
+        
+#     with open("sp500tickers.pickle","wb") as f:
+#         pickle.dump(tickers,f)
+        
+    print('Total number of tickers: ', len(tickers))
+    return tickers
+
+
+# -
+
 if args.symbol:
     tickers = args.symbol
 else:
-    tickers = gt.get_tickers()
+#     tickers = gt.get_tickers()
+    tickers = save_sp500_tickers()[:]
 
 print('Number of tickers: ', len(tickers))
 print('Last 5 tickers: ', tickers[-5:])
