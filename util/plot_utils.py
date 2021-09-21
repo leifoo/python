@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot(y, x=None, figsize=[16, 10], title='', labels=[], show=True, save=False):    
+def plot(y, x=None, figsize=[16, 10], title='', color=None, labels=[], legendout=False, 
+         show=True, save=False):    
     '''
     Plot y versus x as lines and/or markers.
     
@@ -15,8 +16,12 @@ def plot(y, x=None, figsize=[16, 10], title='', labels=[], show=True, save=False
         The width, height of the figure in inches
     title : str, default=''
         The title to the figure.
+    color : str or list of str, default=None,
+        The line color 
     labels : list of str, default=[]
         The labels of the components of input y
+    legendout : bool, default=False
+        Whether to put legend outside of the plot
     show : bool, default=True
         Whether to display figure.
     save : bool, default=False
@@ -29,23 +34,30 @@ def plot(y, x=None, figsize=[16, 10], title='', labels=[], show=True, save=False
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     fig.suptitle(title, fontsize=16)
 
-
     if x is None:
         x = np.arange(0, y.shape[-1])
+
+    if not color:
+        color = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
     dim = len(y.shape)
 
     if dim == 1:
-        ax.plot(x, y, label=labels)
+        ax.plot(x, y, color[0], label=labels)
     else:
         if not labels:
             labels = ['y_'+str(i) for i in range(y.shape[0])]
         for i in range(y.shape[0]):
-            ax.plot(x, y[i], label=labels[i])
+            ax.plot(x, y[i], color[i], label=labels[i])
 
-    if dim > 1:
-        ax.legend(loc="upper left", fontsize=14)
-        ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0., ncol=1, fontsize=14)
+        # Add legend
+        ax.legend(loc="upper right", fontsize=14)
+        if legendout:
+            # Shrink current axis by 20%
+            box = ax.get_position()
+            ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+            ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0., ncol=1, fontsize=14)
 
     if show:
         plt.show()
@@ -90,4 +102,4 @@ if __name__ == "__main__":
     print(f'len(y1.shape) = {len(y1.shape)}')
     plot(y1, title='y1', show=False)
     plot(y2, x, title='y2', show=False)
-    plot(np.stack((y1, y2), axis=0), x, title='y')
+    plot(np.stack((y1, y2), axis=0), x, title='y', color=['k', 'r', 'b'], legendout=True)
