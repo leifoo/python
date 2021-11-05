@@ -88,7 +88,7 @@ def plot(y, x=None, figsize=[16, 10], title='', color=None, labels=[], legendout
 #     ax.tick_params(axis="y", labelsize=14)
 #     ax.legend(loc="upper left", fontsize=14)
 #     ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0., ncol=1, fontsize=14)
-    
+
 #     plt.imsave(f"{title}.png")
 
 #     plt.show()
