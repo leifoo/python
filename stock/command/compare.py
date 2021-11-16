@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import bs4 as bs
 import datetime as dt
@@ -23,7 +25,9 @@ default_start_year = 2010
 data_path = '../data/all_stock'
 useLocalData = False
 
-parser = argparse.ArgumentParser(description='Compare stocks')
+# Create a parser
+parser = argparse.ArgumentParser(description='Compare and plot stocks')
+
 parser.add_argument('symbol', nargs='+', type=str,
                    help='Stock symbols')
 parser.add_argument('-d', '--date', nargs='+', type=str,
