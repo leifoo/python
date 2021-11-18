@@ -27,7 +27,7 @@ parser.add_argument('output', nargs='?', type=str,
 args = parser.parse_args()
 print(args)
 
-input_name = 'output'
+input_name = 'input'
 # Input
 if os.path.exists(args.input[0]):
     ifile = args.input[0]
@@ -79,8 +79,13 @@ te_name = te.lstrip('0:')
 ts_name = ts[-len(te_name):]
 fname = f'{input_name}_{ts_name}-{te_name}'
 
-if args.output:
-    fname = args.output.rstrip('.mp3')
+def rchop(s, suffix):
+    if suffix and s.endswith(suffix):
+        return s[:-len(suffix)]
+    return s
+
+if args.output: 
+    fname = rchop(args.output, '.mp3')
 
 ofile = fname+'.mp3'
 print(ofile)
@@ -137,3 +142,7 @@ if subprocess.run(commands_list2).returncode == 0:
     print ("Sucess: Convert video to mp3.")
 else:
     print ("Error: Convert video to mp3!!!")
+
+# Remove video file
+if not output_video:
+    subprocess.run(['rm', vfile])
