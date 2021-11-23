@@ -1,0 +1,8 @@
+2. concat demuxer
+Use this method when you want to avoid a re-encode and your format does not support file-level concatenation (most files used by general users do not support file-level concatenation).
+
+$ cat mylist.txt
+file '/path/to/file1'
+file '/path/to/file2'
+    
+$ ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4
