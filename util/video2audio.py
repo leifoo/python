@@ -9,7 +9,7 @@ import subprocess
 ffmpeg = subprocess.check_output(["which", "ffmpeg"]).decode("utf-8").rstrip('\n')
 
 # Create a parser
-parser = argparse.ArgumentParser(description='Trim and convert video to mp3')
+parser = argparse.ArgumentParser(description='Trim and convert video to mp3. Example: video2audio.py -s 3001 -e 5900 input output (start/end time: 30:01, 59:00)')
 
 parser.add_argument('input', nargs=1, type=str,
                    help='Input video file')
