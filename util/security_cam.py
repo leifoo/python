@@ -1,7 +1,14 @@
+import os
 import cv2
 from datetime import datetime
 
+dt_min = 1
+t_start = None
+t_end = None
 dir = '/home/lxf470/Downloads/security_cam/'
+video_file = None
+initial = True
+prev_motion = False
 
 cap = cv2.VideoCapture(0)
 
@@ -16,9 +23,6 @@ mog = cv2.createBackgroundSubtractorMOG2()
 frame_width = int(cap.get(3)) 
 frame_height = int(cap.get(4)) 
 size = (frame_width, frame_height) 
-
-start = True
-prev_motion = False
 
 while True:
     ret, frame = cap.read()
@@ -42,31 +46,37 @@ while True:
         # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
     
     if contours:
-        if start:
-            start = False
-        else:
-            # print(str(datetime.now().strftime('%Y%m%d-%H%M%S')))
-
+        if initial:
+            initial = False
+        else:          
             if not prev_motion:
-                print(f'{datetime.now().strftime("%Y/%m/%d %H:%M:%S")}: Start recording')
-                # Below VideoWriter object will create 
-                # a frame of above defined The output  
-                # is stored in 'filename.avi' file. 
-                result = cv2.VideoWriter(dir+str(datetime.now().strftime('%Y%m%d-%H-%M-%S'))+'.avi',  
-                                        cv2.VideoWriter_fourcc(*'MJPG'), 
-                                        20, size) 
+                t_start = datetime.now()
+                print(f'{t_start.strftime("%Y/%m/%d %H:%M:%S")}: Start recording')
 
-            # Write the frame into the 
-            # file 'filename.avi' 
+                video_file = dir+str(t_start.strftime('%Y%m%d-%H-%M-%S'))+'.avi'
+                # VideoWriter object will create a frame stored in 'filename.avi' file. 
+                result = cv2.VideoWriter(video_file,
+                                        cv2.VideoWriter_fourcc(*'MJPG'), 
+                                        30, size) 
+
+            # Write the frame into the file 
             result.write(frame) 
             prev_motion = True
     else:
         if prev_motion:
-            print(f'{datetime.now().strftime("%Y/%m/%d %H:%M:%S")}: Save video')
-            print('-'*20)
-
+            
             # release video write objects 
             result.release() 
+
+            t_end = datetime.now()
+            print(f'Motion duration {(t_end - t_start).total_seconds()}')
+
+            if (t_end - t_start).total_seconds() > 1:
+                print(f'{datetime.now().strftime("%Y/%m/%d %H:%M:%S")}: Save video')
+                print('-'*20)
+            else:
+                os.remove(video_file)
+
         prev_motion = False 
 
     cv2.imshow('Motion Detection', frame)
