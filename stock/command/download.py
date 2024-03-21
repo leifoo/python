@@ -15,6 +15,8 @@ import sys
 from get_all_tickers import get_tickers as gt
 import requests
 import bs4 as bs
+import yfinance as yf
+yf.pdr_override()
 
 default_start_year = 2000
 data_path = '../data/all_stock'
@@ -106,15 +108,16 @@ for count, ticker in enumerate(tqdm(tickers)):
 
     if not os.path.exists(data_path+'/{}.csv'.format(ticker)):
         try:
-            df = web.DataReader(ticker, 'yahoo', start, end)
+            df = web.get_data_yahoo(ticker, start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'))
         except:
             print(ticker, 'does not exist! Skip...')
             missing_ticker.append(ticker)
             continue
 
+        print(df)
         # time.sleep(0.5)
         if not args.all:
-            df.drop(['Open', 'High', 'Low', 'Close'], 1, inplace=True)
+            df.drop(['Open', 'High', 'Low', 'Close'], inplace=True)
 
         if ticker in reserved:
             ticker += '_' 
